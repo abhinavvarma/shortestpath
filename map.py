@@ -10,6 +10,11 @@ class Point(object):
 
 class Intersection(object):
     def __init__(self, index, location):
+        '''
+
+        :param index:
+        :param location is an instance of Point:
+        '''
         self.index = index
         self.location = location
 
