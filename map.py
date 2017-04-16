@@ -18,5 +18,8 @@ class Map(object):
     def __init__(self, input_file):
         pass
 
-    def get_connected_nodes_to(self, intersection):
+    def get_connected_intersections_to(self, intersection):
+        pass
+
+    def get_intersections(self):
         pass
