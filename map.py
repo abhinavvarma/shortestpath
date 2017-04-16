@@ -19,4 +19,9 @@ class Map(object):
         pass
 
     def get_connected_nodes_to(self, intersection):
+        '''
+        Return a list of connected intersection objects to a  given intersection
+        :param intersection: 
+        :return: [intersection1, interseeciton2, ....] 
+        '''
         pass
