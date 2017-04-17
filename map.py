@@ -75,7 +75,7 @@ class Map(object):
         :return: None
         '''
         #initialize the route dict for each index
-        self.route[index] = []
+        self.routes[index] = []
 
         #create a new point instance
         new_point = Point(x_coord, y_coord)
