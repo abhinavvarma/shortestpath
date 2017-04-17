@@ -108,7 +108,8 @@ class Map(object):
         :param intersection: integer value of the intersection
         :return: list of instances 
         '''
-        connected_indexes = self.intersection_list[intersection]
+        #read list of connected intersections for an index location
+        connected_indexes = self.routes[intersection]
         intersection_instance_list = []
         for index in connected_indexes:
             intersection_instance_list.append(self.intersection_list[index])
