@@ -20,28 +20,29 @@ class Intersection(object):
 
 
 class Map(object):
-    def __init__(self, input_file):
+    def __init__(self):
         self.routes = {}
         self.intersection_list = []
 
-    def load_input(self, input_file):
+    def load_input(self, input_file_path):
         '''
         Loads the intersections from the input file to a list 
-        :param input_file: path to the input file 
+        :param input_file_path: path to the input file
         :return: 
         '''
-        file = open(input_file, 'r')
+        input_file = open(input_file_path, 'r')
 
-        value = file.readline().strip().split(' ')
+        value = input_file.readline().strip().split(' ')
 
         no_of_nodes = int(value[0])
         no_of_edges = int(value[1])
 
-        file.readline()
+        input_file.readline()
         intersections_list = []
 
         #Create instances of an instersection and add to a list of intersections
-        for line in file:
+        while True:
+            line = input_file.readline()
             if len(line) == 1:
                 break
             coordinates = line.strip().split()
@@ -56,13 +57,14 @@ class Map(object):
 
 
 
+        line = input_file.readline()
 
         #reading the route between the points
-        connected_intersections = file.readline().strip().split()
+        connected_intersections = line.strip().split()
 
         while connected_intersections != []:
             self.add_route(connected_intersections[0], connected_intersections[1])
-            connected_intersections = file.readline().strip().split()
+            connected_intersections = input_file.readline().strip().split()
 
 
 
