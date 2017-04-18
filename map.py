@@ -1,3 +1,4 @@
+from math import sqrt
 
 
 class Point(object):
@@ -6,7 +7,7 @@ class Point(object):
         self.y_coord = y
 
     def distance_to(self, point):
-        pass
+        return sqrt((point.y_coord-self.y_coord)**2+(point.x_coord-self.x_coord)**2)
 
 
 class Intersection(object):
@@ -23,6 +24,9 @@ class Map(object):
     def __init__(self):
         self.routes = {}
         self.intersection_list = []
+
+    def get_intersection(self, index):
+        return self.intersection_list[index]
 
     def load_input(self, input_file_path):
         '''
@@ -47,9 +51,9 @@ class Map(object):
                 break
             coordinates = line.strip().split()
             # Read all coordinates
-            index = coordinates[0]
-            x_coord = coordinates[1]
-            y_coord = coordinates[2]
+            index = int(coordinates[0])
+            x_coord = int(coordinates[1])
+            y_coord = int(coordinates[2])
 
 
             #add intersection to the intersection list
@@ -63,7 +67,7 @@ class Map(object):
         connected_intersections = line.strip().split()
 
         while connected_intersections != []:
-            self.add_route(connected_intersections[0], connected_intersections[1])
+            self.add_route(int(connected_intersections[0]), int(connected_intersections[1]))
             connected_intersections = input_file.readline().strip().split()
 
 
@@ -80,7 +84,7 @@ class Map(object):
         self.routes[index] = []
 
         #create a new point instance
-        new_point = Point(x_coord, y_coord)
+        new_point = Point(int(x_coord), int(y_coord))
 
         #create a new intersectio instance
         new_intersection = Intersection(index, new_point)
@@ -111,10 +115,10 @@ class Map(object):
         :return: list of instances 
         '''
         #read list of connected intersections for an index location
-        connected_indexes = self.routes[intersection]
+        connected_indexes = self.routes[intersection.index]
         intersection_instance_list = []
         for index in connected_indexes:
-            intersection_instance_list.append(self.intersection_list[index])
+            intersection_instance_list.append(self.intersection_list[int(index)])
 
         return intersection_instance_list
 
