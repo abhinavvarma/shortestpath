@@ -1,8 +1,8 @@
 import map
 from pathfinder import ShortestPathFinder
-from visualizepoints import plot_points
+from visualizepoints import visualize_route
 
-file = 'data/input6.txt'
+file = 'data/usa.txt'
 
 map_instance = map.Map()
 map_instance.load_input(file)
