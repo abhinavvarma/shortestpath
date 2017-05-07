@@ -6,6 +6,7 @@ class Node(object):
     def __init__(self, intersection):
         self.intersection = intersection
         self.distance = sys.maxint
+        self.visited = False
         self.parent = None
 
     @property
@@ -14,6 +15,9 @@ class Node(object):
 
     def distance_to(self, node):
         return node.intersection.location.distance_to(self.intersection.location)
+
+    def __str__(self):
+        return "%s, d:%s, v:%s" % (self.intersection , self.distance , self.visited)
 
 
 class NodeManager(object):
@@ -59,10 +63,13 @@ class ShortestPathFinder(object):
 
         while not queue.empty():
             current = queue.get()
+            current.visited = True
             adjacent_intersections = self.map.get_connected_intersections_to(current.intersection)
 
             for adjacent_intersection in adjacent_intersections:
                 adjacent_node = node_manager.to_node(adjacent_intersection)
+                if adjacent_node.visited:
+                    continue
                 queue.put(adjacent_node)
                 distance = current.distance + adjacent_node.distance_to(current)
 
@@ -82,6 +89,9 @@ class ShortestPathFinder(object):
         if not cached_paths:
             self._compute_single_source_shortest_path(source)
             cached_paths = self.get_cached_paths(source)
+
+        if destination.index not in cached_paths:
+            return -1, []
 
         destination_node = cached_paths[destination.index]
         path = []
