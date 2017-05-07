@@ -52,16 +52,23 @@ class NodeQueue(object, PriorityQueue):
 class ShortestPathFinder(object):
     def __init__(self, map):
         self.map = map
-        self._cached_paths = {}
+        self._reached_nodes = {}
 
-    def _compute_single_source_shortest_path(self, source):
+    def get_cost(self, source, destination):
+        raise NotImplementedError()
+
+
+    def is_done(self, queue, source=None, destination=None):
+        return queue.empty()
+
+    def _compute_single_source_shortest_path(self, source, destination=None):
         node_manager = NodeManager()
         queue = NodeQueue(node_manager)
         source_node = node_manager.to_node(source)
         source_node.distance = 0
         queue.put(source_node)
 
-        while not queue.empty():
+        while not self.is_done(queue, source, destination):
             current = queue.get()
             current.visited = True
             adjacent_intersections = self.map.get_connected_intersections_to(current.intersection)
@@ -76,19 +83,19 @@ class ShortestPathFinder(object):
                 if adjacent_node.distance > distance:
                     adjacent_node.distance = distance
                     adjacent_node.parent = current
-                    self.get_cached_paths(source_node.intersection)[adjacent_node.id] = adjacent_node
+                    self.get_reached_nodes(source_node.intersection)[adjacent_node.id] = adjacent_node
 
-    def get_cached_paths(self, source):
-        if source.index not in self._cached_paths:
-            self._cached_paths[source.index] = {}
-        return self._cached_paths[source.index]
+    def get_reached_nodes(self, source):
+        if source.index not in self._reached_nodes:
+            self._reached_nodes[source.index] = {}
+        return self._reached_nodes[source.index]
 
     def get_shortest_path(self, source, destination):
-        cached_paths = self.get_cached_paths(source)
+        cached_paths = self.get_reached_nodes(source)
 
         if not cached_paths:
-            self._compute_single_source_shortest_path(source)
-            cached_paths = self.get_cached_paths(source)
+            self._compute_single_source_shortest_path(source, destination)
+            cached_paths = self.get_reached_nodes(source)
 
         if destination.index not in cached_paths:
             return -1, []
@@ -97,8 +104,21 @@ class ShortestPathFinder(object):
         path = []
 
         current = destination_node
-        while current.parent != None:
+        while current != None:
             path.insert(0, current.intersection)
             current = current.parent
 
         return destination_node.distance, path
+
+
+class DijkstraShortestPathFinder(ShortestPathFinder):
+    def get_cost(self, source_node, destination_node):
+        return destination_node.distance
+
+
+class AStarShortestPathFinder(ShortestPathFinder):
+    def get_cost(self, source_node, destination_node):
+        return destination_node.intersection.location.distance_to(source_node.intersection.location) + destination_node.distance
+
+    def is_done(self, queue, source=None, destination=None):
+        return queue.empty() or destination.index in self.get_reached_nodes(source)
