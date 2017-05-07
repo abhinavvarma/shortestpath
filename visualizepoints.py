@@ -1,24 +1,30 @@
 import matplotlib.pyplot as plt
 
-x = []
-y = []
-
-
+x_route = []
+y_route = []
 x_all = []
 y_all = []
 
-def plot_points(all_instances, intersection_points):
-    for point in intersection_points:
-       x.append(point.location.x_coord)
-       y.append(point.location.y_coord)
 
-    for all_point in all_instances:
-        x_all.append(all_point.location.x_coord)
-        y_all.append(all_point.location.y_coord)
+def visualize_route(visited_intersections, route):
+    '''
+    Visualize the visited points and route in a scatter plot
+    :param all_intersections: list of intersections that are visited
+    :param route: list of intersections that form the route
+    '''
 
 
-    plt.scatter(x_all,y_all)
-    plt.scatter(x,y)
-    plt.plot(x,y)
 
+    for route_intersection in route:
+        x_route.append(route_intersection.location.x_coord)
+        y_route.append(route_intersection.location.y_coord)
+
+
+    for intersection in visited_intersections:
+        x_all.append(intersection.location.x_coord)
+        y_all.append(intersection.location.y_coord)
+
+    plt.plot(x_route, y_route)
+    plt.scatter(x_all, y_all)
     plt.show()
+
