@@ -40,11 +40,11 @@ class NodeQueue(object, PriorityQueue):
         self._node_manager = node_manager
         PriorityQueue.__init__(self)
 
-    def put(self, node, block=True, timeout=None):
+    def enqueue(self, node, distance):
         self._node_manager.store(node)
-        PriorityQueue.put(self, (node.distance, node.id), block=True, timeout=None)
+        PriorityQueue.put(self, (distance, node.id))
 
-    def get(self, block=True, timeout=None):
+    def dequeue(self):
         item = super(NodeQueue, self).get(block=True, timeout=None)
         return self._node_manager.get_node(item[1])
 
@@ -54,7 +54,7 @@ class ShortestPathFinder(object):
         self.map = map
         self._reached_nodes = {}
 
-    def get_cost(self, source, destination):
+    def get_cost(self, source_node, destination_node):
         raise NotImplementedError()
 
 
@@ -65,11 +65,12 @@ class ShortestPathFinder(object):
         node_manager = NodeManager()
         queue = NodeQueue(node_manager)
         source_node = node_manager.to_node(source)
+        destination_node = node_manager.to_node(destination)
         source_node.distance = 0
-        queue.put(source_node)
+        queue.enqueue(source_node, self.get_cost(source_node, destination_node))
 
         while not self.is_done(queue, source, destination):
-            current = queue.get()
+            current = queue.dequeue()
             current.visited = True
             adjacent_intersections = self.map.get_connected_intersections_to(current.intersection)
 
@@ -77,7 +78,7 @@ class ShortestPathFinder(object):
                 adjacent_node = node_manager.to_node(adjacent_intersection)
                 if adjacent_node.visited:
                     continue
-                queue.put(adjacent_node)
+                queue.enqueue(adjacent_node, self.get_cost(adjacent_node, destination_node))
                 distance = current.distance + adjacent_node.distance_to(current)
 
                 if adjacent_node.distance > distance:

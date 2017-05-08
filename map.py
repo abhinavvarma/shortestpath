@@ -101,7 +101,7 @@ class Map(object):
 
 
 
-    def add_route(self, start, end):
+    def add_route(self, start, end, bidirectional=True):
         '''
         Add a route from start to ending index, the routes are stored as a dictionary
         :param start: index of starting location 
@@ -110,6 +110,8 @@ class Map(object):
         '''
         if end not in self.routes[start]:
             self.routes[start].append(end)
+        if bidirectional and (start not in self.routes[end]):
+            self.routes[end].append(start)
 
 
 

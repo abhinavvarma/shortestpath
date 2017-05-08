@@ -9,12 +9,12 @@ class Visualizer():
     def plot_intersection(self, intersection, color="w"):
         self.g.add_node(intersection.index, pos=(intersection.location.x_coord, intersection.location.y_coord), node_color=color)
 
-    def plot_edge(self, source_intersection_id, destination_intersection_id, color="b"):
+    def plot_edge(self, source_intersection_id, destination_intersection_id, color="c"):
         self.g.add_edge(source_intersection_id, destination_intersection_id, {"edge_color":color})
 
     def draw(self, map, path):
-        if len(path) == 0:
-            return
+        # if len(path) == 0:
+        #     return
         self.plot_map(map, path)
         pos = nx.get_node_attributes(self.g, 'pos')
         node_colors = []

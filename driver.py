@@ -9,8 +9,8 @@ map_instance = map.Map()
 map_instance.load_input(file)
 # result = AStarShortestPathFinder(map_instance).get_shortest_path( map_instance.get_intersection(0),
 #                                                              map_instance.get_intersection(5),)
-result = DijkstraShortestPathFinder(map_instance).get_shortest_path( map_instance.get_intersection(608),
-                                                             map_instance.get_intersection(76344),)
+result = AStarShortestPathFinder(map_instance).get_shortest_path( map_instance.get_intersection(29),
+                                                             map_instance.get_intersection(87411),)
 
 
 v = Visualizer()
