@@ -9,6 +9,9 @@ class Point(object):
     def distance_to(self, point):
         return sqrt((point.y_coord-self.y_coord)**2+(point.x_coord-self.x_coord)**2)
 
+    def __str__(self):
+        return "(%s, %s)" % (self.x_coord, self.y_coord)
+
 
 class Intersection(object):
     def __init__(self, index, location):
@@ -18,6 +21,9 @@ class Intersection(object):
         '''
         self.index = index
         self.location = location
+
+    def __str__(self):
+        return "%s@%s" % (self.index, self.location)
 
 
 class Map(object):
@@ -95,7 +101,7 @@ class Map(object):
 
 
 
-    def add_route(self, start, end):
+    def add_route(self, start, end, bidirectional=True):
         '''
         Add a route from start to ending index, the routes are stored as a dictionary
         :param start: index of starting location 
@@ -104,6 +110,8 @@ class Map(object):
         '''
         if end not in self.routes[start]:
             self.routes[start].append(end)
+        if bidirectional and (start not in self.routes[end]):
+            self.routes[end].append(start)
 
 
 
