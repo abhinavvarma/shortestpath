@@ -31,6 +31,9 @@ else:
 print "Selected Algorithm:", Algo
 print "\nExecuting.."
 result = Algo(map_instance).get_shortest_path(source,dest)
+print "Done. Printing the shortest path"
+for i in result[1]:
+    print i
 
 v = Visualizer()
 v.draw(map_instance, result[1])
