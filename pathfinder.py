@@ -54,7 +54,7 @@ class ShortestPathFinder(object):
         self.map = map
         self._reached_nodes = {}
 
-    def get_cost(self, source_node, destination_node):
+    def get_cost(self, current_node, destination_node):
         raise NotImplementedError()
 
 
@@ -113,13 +113,13 @@ class ShortestPathFinder(object):
 
 
 class DijkstraShortestPathFinder(ShortestPathFinder):
-    def get_cost(self, source_node, destination_node):
-        return destination_node.distance
+    def get_cost(self, current_node, destination_node):
+        return current_node.distance
 
 
 class AStarShortestPathFinder(ShortestPathFinder):
-    def get_cost(self, source_node, destination_node):
-        return destination_node.intersection.location.distance_to(source_node.intersection.location) + destination_node.distance
+    def get_cost(self, current_node, destination_node):
+        return destination_node.intersection.location.distance_to(current_node.intersection.location) + destination_node.distance
 
     def is_done(self, queue, source=None, destination=None):
         return queue.empty() or destination.index in self.get_reached_nodes(source)
